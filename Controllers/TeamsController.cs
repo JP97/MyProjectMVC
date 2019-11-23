@@ -7,22 +7,27 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyProjectMVC.Data;
 using MyProjectMVC.Models;
+using MyProjectMVC.Utilities;
 
 namespace MyProjectMVC.Controllers
 {
     public class TeamsController : Controller
     {
         private readonly MyProjectMVCContext _context;
+        private readonly ApiHelper helper = new ApiHelper();
 
         public TeamsController(MyProjectMVCContext context)
         {
             _context = context;
+
+            List<Team> teams = helper.GetTeams();
+            _context.AddRange(teams);
         }
 
         // GET: Teams
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Team.ToListAsync());
+            return View(await _context.Team.Include(t => t.players).ToListAsync());
         }
 
         // GET: Teams/Details/5

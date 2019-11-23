@@ -23,6 +23,14 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.TeamName)
+                <ul>
+                    @foreach (var player in item.players)
+                    {
+                    <li>
+                        @Html.DisplayFor(modelitem => player.Name)
+                    </li>
+                    }
+                </ul>
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.TeamID">Edit</a> |

@@ -20,14 +20,19 @@ namespace MyProjectMVC.Controllers
         {
             _context = context;
 
-            List<Team> teams = helper.GetTeams();
-            _context.AddRange(teams);
+            if (!_context.Team.Any())
+            {
+                List<Team> teams = helper.GetTeams();
+                _context.AddRange(teams);
+                _context.SaveChanges(); 
+            }
         }
 
         // GET: Teams
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Team.Include(t => t.players).ToListAsync());
+            var teams = await _context.Team.Include(t => t.players).ToListAsync();
+            return View(teams);
         }
 
         // GET: Teams/Details/5

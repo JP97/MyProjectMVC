@@ -70,6 +70,7 @@ namespace MyProjectMVC.Controllers
             {
                 _context.Add(team);
                 await _context.SaveChangesAsync();
+                string result = helper.PostTeamData(team);
                 return RedirectToAction(nameof(Index));
             }
             return View(team);

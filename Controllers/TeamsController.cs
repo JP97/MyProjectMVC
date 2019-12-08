@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyProjectMVC.Data;
 using MyProjectMVC.Models;
+using MyProjectMVC.Models.ViewModels;
 using MyProjectMVC.Utilities;
 
 namespace MyProjectMVC.Controllers
@@ -27,7 +28,10 @@ namespace MyProjectMVC.Controllers
         // GET: Teams
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Team.Include(t => t.players).ToListAsync());
+            //var teams = new Teamwithplayer();
+
+            var teams = await _context.Team.ToListAsync();
+            return View(teams);
         }
 
         // GET: Teams/Details/5

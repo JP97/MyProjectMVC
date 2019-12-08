@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MyProjectMVC.Models.Team>
+﻿@model MyProjectMVC.Models.ViewModels.Teamwithplayer
 
 @{
     ViewData["Title"] = "Index";
@@ -13,24 +13,17 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.TeamName)
+                @Html.DisplayNameFor(model => Model.Teams)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Teams) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.TeamName)
-                <ul>
-                    @foreach (var player in item.players)
-                    {
-                    <li>
-                        @Html.DisplayFor(modelitem => player.Name)
-                    </li>
-                    }
-                </ul>
+ 
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.TeamID">Edit</a> |

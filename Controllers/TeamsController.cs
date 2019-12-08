@@ -30,10 +30,25 @@ namespace MyProjectMVC.Controllers
         }
 
         // GET: Teams
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString, int? id)
         {
-            var teams = await _context.Team.Include(t => t.players).ToListAsync();
-            return View(teams);
+            Teamwithplayer viewModel = new Teamwithplayer();
+            viewModel.Teams = await _context.Team.Include(t => t.players).ToListAsync();
+
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                viewModel.Teams = await _context.Team.Where(t => t.TeamName.Contains(searchString)).ToListAsync();
+            }
+
+            if(id != null)
+            {
+                List<Player> players = viewModel.Players.Where(p => p.Team.TeamID == id).ToList();
+                viewModel.Teams = viewModel.Teams.Where(t => t.TeamID == id);
+                viewModel.Players = players;
+            }
+
+            return View(viewModel);
         }
 
         // GET: Teams/Details/5

@@ -21,16 +21,18 @@ namespace MyProjectMVC.Controllers
         {
             _context = context;
 
-            List<Team> teams = helper.GetTeams();
-            _context.AddRange(teams);
+            if (!_context.Team.Any())
+            {
+                List<Team> teams = helper.GetTeams();
+                _context.AddRange(teams);
+                _context.SaveChanges(); 
+            }
         }
 
         // GET: Teams
         public async Task<IActionResult> Index()
         {
-            //var teams = new Teamwithplayer();
-
-            var teams = await _context.Team.ToListAsync();
+            var teams = await _context.Team.Include(t => t.players).ToListAsync();
             return View(teams);
         }
 
@@ -69,6 +71,7 @@ namespace MyProjectMVC.Controllers
             {
                 _context.Add(team);
                 await _context.SaveChangesAsync();
+                string result = helper.PostTeamData(team);
                 return RedirectToAction(nameof(Index));
             }
             return View(team);
